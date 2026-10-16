@@ -1,0 +1,6 @@
+{
+  "name": "Study Labs 학원 ERP",
+  "description": "중등 수학 전문 학원을 위한 올인원 관리 솔루션 (학생/상담 DB, 태블릿 출결, 오답·취약유형 분석, 학부모 리포트, 복합 수납, 반/클리닉 스케줄러)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
