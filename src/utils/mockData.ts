@@ -155,7 +155,7 @@ export const initialStudents: Student[] = [
     parentName: '박선영 (모)',
     parentPhone: '010-9182-3847',
     classId: 'class-m2-adv',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2025-01-08',
     notes: '수학적 직관은 뛰어나나 계산 실수가 잦음. 킬러 문항 도전 열의 높음.',
     monthlyTuition: 380000
@@ -171,7 +171,7 @@ export const initialStudents: Student[] = [
     parentName: '김진호 (부)',
     parentPhone: '010-5829-1920',
     classId: 'class-m2-adv',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2025-02-15',
     notes: '풀이 과정 서술이 매우 꼼꼼함. 시간 배분 훈련이 필요함.',
     monthlyTuition: 380000
@@ -187,7 +187,7 @@ export const initialStudents: Student[] = [
     parentName: '이지은 (모)',
     parentPhone: '010-7749-3829',
     classId: 'class-m2-concept',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2025-03-02',
     notes: '방정식 활용 단원에서 독해 오류 빈번. 1:1 오답 클리닉 효과 우수.',
     monthlyTuition: 350000
@@ -203,7 +203,7 @@ export const initialStudents: Student[] = [
     parentName: '최상철 (부)',
     parentPhone: '010-8291-0192',
     classId: 'class-m3-naesin',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2024-07-10',
     notes: '전교 상위 5%권 유지 중. 이차함수 고난도 변별력 문항 집중 훈련 중.',
     monthlyTuition: 420000
@@ -219,7 +219,7 @@ export const initialStudents: Student[] = [
     parentName: '한미경 (모)',
     parentPhone: '010-3819-2810',
     classId: 'class-m3-naesin',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2024-09-01',
     notes: '성실하나 시험 당일 긴장으로 인한 실수 발생. 멘탈 케어 병행 필요.',
     monthlyTuition: 420000
@@ -235,7 +235,7 @@ export const initialStudents: Student[] = [
     parentName: '윤동주 (부)',
     parentPhone: '010-2910-4729',
     classId: 'class-m1-starter',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2025-03-05',
     notes: '초등 과정 연계 부드럽게 이행 중. 음수와 부호 연산 반복 훈련 중.',
     monthlyTuition: 320000
@@ -251,7 +251,7 @@ export const initialStudents: Student[] = [
     parentName: '강태석 (부)',
     parentPhone: '010-8819-3910',
     classId: 'class-m2-adv',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2025-01-10',
     notes: '도형 단원 증명력 탁월. 연립부등식 부호 반전 주의 필요.',
     monthlyTuition: 380000
@@ -267,7 +267,7 @@ export const initialStudents: Student[] = [
     parentName: '문정희 (모)',
     parentPhone: '010-9019-2819',
     classId: 'class-m2-concept',
-    status: 'active',
+    status: 'withdrawn',
     joinedDate: '2025-02-20',
     notes: '과제 제출 성실도 최상. 개념 숙지 후 문제 적용 속도 향상 중.',
     monthlyTuition: 350000
