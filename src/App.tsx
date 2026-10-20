@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   UserRole, 
   Student, 
@@ -9,8 +9,7 @@ import {
   ClinicSchedule, 
   Consultation, 
   NotificationLog, 
-  AcademyClass, 
-  CurriculumUnit 
+  AcademyClass 
 } from './types';
 import { 
   loadAllData, 
@@ -19,6 +18,11 @@ import {
   exportDataAsJson, 
   AppStateData 
 } from './utils/storage';
+import { 
+  subscribeToFirestoreState, 
+  syncStateToFirestore, 
+  CloudSyncStatus 
+} from './utils/firebaseSync';
 import { Header } from './components/Header';
 import { Sidebar, ActiveTab } from './components/Sidebar';
 import { DashboardView } from './components/DashboardView';
@@ -37,15 +41,78 @@ export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('director');
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
 
+  // Cloud sync status state
+  const [cloudStatus, setCloudStatus] = useState<CloudSyncStatus>({
+    isOnline: false,
+    isSyncing: false,
+    lastSyncedAt: null,
+    error: null,
+  });
+
+  // Track if incoming update is from remote cloud to avoid echo loop
+  const isRemoteUpdateRef = useRef(false);
+
   // Global modals
   const [isKioskOpen, setIsKioskOpen] = useState(false);
   const [isBackupOpen, setIsBackupOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
-  // Auto-sync state to localStorage whenever data changes
+  // Real-time Firestore Subscription
+  useEffect(() => {
+    const unsubscribe = subscribeToFirestoreState(
+      (cloudData) => {
+        isRemoteUpdateRef.current = true;
+        setData(cloudData);
+        saveAllData(cloudData);
+      },
+      (statusUpdates) => {
+        setCloudStatus(prev => ({ ...prev, ...statusUpdates }));
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  // Sync to local storage & propagate to Firestore when state changes
   useEffect(() => {
     saveAllData(data);
+
+    // If change was made locally (not from remote onSnapshot listener), push to Firestore
+    if (!isRemoteUpdateRef.current) {
+      setCloudStatus(prev => ({ ...prev, isSyncing: true }));
+      const timer = setTimeout(() => {
+        syncStateToFirestore(data).then((success) => {
+          setCloudStatus(prev => ({
+            ...prev,
+            isSyncing: false,
+            isOnline: success,
+            lastSyncedAt: success 
+              ? new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+              : prev.lastSyncedAt,
+          }));
+        });
+      }, 400); // 400ms debounce
+      return () => clearTimeout(timer);
+    } else {
+      isRemoteUpdateRef.current = false;
+    }
   }, [data]);
+
+  const handleSyncToCloud = () => {
+    setCloudStatus(prev => ({ ...prev, isSyncing: true }));
+    syncStateToFirestore(data).then((success) => {
+      setCloudStatus(prev => ({
+        ...prev,
+        isSyncing: false,
+        isOnline: success,
+        lastSyncedAt: success 
+          ? new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+          : prev.lastSyncedAt,
+      }));
+    });
+  };
 
   // Handle role change with view restriction safeguard
   const handleRoleChange = (role: UserRole) => {
@@ -182,11 +249,13 @@ export default function App() {
   const handleImportData = (imported: AppStateData) => {
     setData(imported);
     saveAllData(imported);
+    syncStateToFirestore(imported);
   };
 
   const handleResetData = () => {
     const res = resetAllDataToDefault();
     setData(res);
+    syncStateToFirestore(res);
   };
 
   const todayStr = new Date().toISOString().slice(0, 10);
@@ -206,6 +275,8 @@ export default function App() {
         onOpenBackup={() => setIsBackupOpen(true)}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         notificationCount={data.notifications.length}
+        cloudStatus={cloudStatus}
+        onSyncToCloud={handleSyncToCloud}
       />
 
       {/* Main Workspace Frame */}

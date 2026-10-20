@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "AcademyState": {
+      "title": "Academy State",
+      "description": "Central state for Study Labs ERP including students, attendance, exams, invoices, classes, and clinics",
+      "type": "object",
+      "properties": {
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp of the last modification"
+        },
+        "students": {
+          "type": "array",
+          "description": "List of active and archived students"
+        },
+        "attendances": {
+          "type": "array",
+          "description": "Attendance logs"
+        },
+        "exams": {
+          "type": "array",
+          "description": "Unit exam records with wrong reason tagging"
+        },
+        "assignments": {
+          "type": "array",
+          "description": "Homework records"
+        },
+        "invoices": {
+          "type": "array",
+          "description": "Tuition and textbook invoices"
+        },
+        "classes": {
+          "type": "array",
+          "description": "Academy classes and capacities"
+        },
+        "clinics": {
+          "type": "array",
+          "description": "Clinic and makeup schedules"
+        },
+        "consultations": {
+          "type": "array",
+          "description": "Consultation journals"
+        },
+        "notifications": {
+          "type": "array",
+          "description": "Notification history"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/academy/{docId}": {
+      "schema": "AcademyState",
+      "description": "Academy shared ERP data for real-time synchronization across devices"
+    }
+  }
+}

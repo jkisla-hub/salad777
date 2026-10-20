@@ -129,6 +129,22 @@ export const initialClasses: AcademyClass[] = [
 
 export const initialStudents: Student[] = [
   {
+    id: 'std-1234',
+    name: '김유현',
+    pin: '1234',
+    school: '서일중',
+    grade: '중2',
+    birthDate: '2012-04-12',
+    phone: '010-1234-1234',
+    parentName: '김유현 학부모',
+    parentPhone: '010-1234-1234',
+    classId: 'class-m3-naesin',
+    status: 'active',
+    joinedDate: '2026-10-16',
+    notes: '서일중 중2 내신 대비 특별 지도 원생',
+    monthlyTuition: 380000
+  },
+  {
     id: 'std-1001',
     name: '이민준',
     pin: '1001',
